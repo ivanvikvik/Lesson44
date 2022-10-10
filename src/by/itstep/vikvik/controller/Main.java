@@ -12,10 +12,10 @@ public class Main {
         Producer producer = new Producer(market);
         Consumer consumer = new Consumer(market);
 
-        TimeUnit.SECONDS.sleep(2);
-
-        producer.stop();
-        consumer.stop();
+//        TimeUnit.SECONDS.sleep(2);
+//
+//        producer.stop();
+//        consumer.stop();
 
     }
 }

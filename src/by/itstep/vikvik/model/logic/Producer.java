@@ -19,12 +19,10 @@ public class Producer implements Runnable {
     public void run() {
         int product = 0;
         while (running) {
-            product++;
-            market.sendProduct(product);
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (InterruptedException exception) {
-                System.out.println(exception);
+            if (market.isEmpty()) {
+                product++;
+                market.sendProduct(product);
+                market.setEmpty(false);
             }
         }
     }

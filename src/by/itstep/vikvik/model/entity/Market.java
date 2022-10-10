@@ -1,40 +1,32 @@
 package by.itstep.vikvik.model.entity;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 public class Market {
-    private int product;
-    private volatile boolean empty;
+    private BlockingQueue<Integer> queue;
 
     public Market() {
-        empty = true;
+        queue = new ArrayBlockingQueue<>(1);
     }
 
-    public synchronized int getProduct() {
-        if (empty) {
-            try {
-                wait();
-            } catch(InterruptedException exception){
-                System.out.println(exception);
-            }
+    public int getProduct() {
+        int product = 0;
+        try {
+            product = queue.take();
+            System.out.println("get product: " + product);   // debug
+        } catch (InterruptedException exception) {
+            System.out.println(exception);
         }
-
-        System.out.println("get product: " + product);   // debug
-        empty = true;
-        notify();
-
         return product;
     }
 
-    public synchronized void sendProduct(int product) {
-        if (!empty) {
-            try {
-                wait();
-            } catch(InterruptedException exception){
-                System.out.println(exception);
-            }
+    public void sendProduct(int product) {
+        try {
+            queue.put(product);
+            System.out.println("send product: " + product);   // debug
+        } catch (InterruptedException exception) {
+            System.out.println(exception);
         }
-        empty = false;
-        this.product = product;
-        System.out.println("send product: " + product);   // debug
-        notify();
     }
 }

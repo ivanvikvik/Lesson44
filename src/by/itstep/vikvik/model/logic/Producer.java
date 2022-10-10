@@ -2,6 +2,8 @@ package by.itstep.vikvik.model.logic;
 
 import by.itstep.vikvik.model.entity.Market;
 
+import java.util.concurrent.TimeUnit;
+
 public class Producer implements Runnable {
     private Market market;
     private Thread thread;
@@ -16,14 +18,18 @@ public class Producer implements Runnable {
     @Override
     public void run() {
         int product = 0;
-        while(running){
+        while (running) {
             product++;
             market.sendProduct(product);
-            
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException exception) {
+                System.out.println(exception);
+            }
         }
     }
 
-    public void stop(){
+    public void stop() {
         running = false;
     }
 

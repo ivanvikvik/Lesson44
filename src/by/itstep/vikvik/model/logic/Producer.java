@@ -19,11 +19,8 @@ public class Producer implements Runnable {
     public void run() {
         int product = 0;
         while (running) {
-            if (market.isEmpty()) {
-                product++;
-                market.sendProduct(product);
-                market.setEmpty(false);
-            }
+            product++;
+            market.sendProduct(product);
         }
     }
 

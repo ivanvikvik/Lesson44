@@ -4,21 +4,37 @@ public class Market {
     private int product;
     private volatile boolean empty;
 
-    public boolean isEmpty() {
-        return empty;
+    public Market() {
+        empty = true;
     }
 
-    public void setEmpty(boolean empty) {
-        this.empty = empty;
-    }
+    public synchronized int getProduct() {
+        if (empty) {
+            try {
+                wait();
+            } catch(InterruptedException exception){
+                System.out.println(exception);
+            }
+        }
 
-    public int getProduct() {
         System.out.println("get product: " + product);   // debug
+        empty = true;
+        notify();
+
         return product;
     }
 
-    public void sendProduct(int product) {
+    public synchronized void sendProduct(int product) {
+        if (!empty) {
+            try {
+                wait();
+            } catch(InterruptedException exception){
+                System.out.println(exception);
+            }
+        }
+        empty = false;
         this.product = product;
         System.out.println("send product: " + product);   // debug
+        notify();
     }
 }

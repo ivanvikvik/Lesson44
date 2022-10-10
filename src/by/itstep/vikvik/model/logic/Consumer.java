@@ -18,10 +18,7 @@ public class Consumer implements Runnable {
     @Override
     public void run() {
         while (running) {
-            if (!market.isEmpty()) {
-                market.getProduct();
-                market.setEmpty(true);
-            }
+            market.getProduct();
         }
     }
 
